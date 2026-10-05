@@ -49,10 +49,18 @@ The script:
 
 1. Installs the latest Pi from `https://pi.dev`.
 2. Installs Herdr.
-3. Backs up any existing `~/.pi` to `~/.pi.bak.<timestamp>`.
-4. Copies this repository's `.pi` into `~/.pi`.
-5. Installs every model listed in `.pi/agent/models.json`.
-6. Runs `pi config apply`.
+3. Adds the Pi/Herdr bin directories to your shell profile (`~/.bashrc`, `~/.zshrc`, etc.).
+4. Backs up any existing `~/.pi` to `~/.pi.bak.<timestamp>`.
+5. Copies this repository's `.pi` into `~/.pi`.
+6. Installs every model listed in `.pi/agent/models.json`.
+7. Runs `pi config apply`.
+
+After the script finishes, load the new PATH (or open a new terminal) so the
+`pi` command is found:
+
+```bash
+source ~/.bashrc    # or ~/.zshrc / ~/.profile
+```
 
 ## Providers
 
@@ -60,6 +68,14 @@ The script:
 online endpoint `https://ollama.com/v1` (not localhost), with 17 hosted models.
 The provider id is `ollama.com` and it is authenticated through the
 `OLLAMA_API_KEY` environment variable.
+
+To configure it from inside Pi:
+
+1. Run `/login`.
+2. Choose **Sign in with an API key**.
+3. Select **Ollama.com** and paste your key.
+
+Alternatively, just `export OLLAMA_API_KEY=...` before starting Pi.
 
 ## Secrets
 

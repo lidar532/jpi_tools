@@ -85,6 +85,29 @@ run_shell() {
 }
 
 # ------------------------------------------------------------------
+# Helper: persist the Pi/Herdr bin dirs into the user's shell profiles
+# ------------------------------------------------------------------
+persist_path() {
+  local dirs="$PI_BIN_DIR:$PI_NODE_BIN_DIR:$PI_LOCAL_BIN"
+  if [[ $DRY_RUN -eq 1 ]]; then
+    printf '>> would add to shell profiles: export PATH="%s:$PATH"\n' "$dirs"
+    return
+  fi
+  for rc in "$USER_HOME/.bashrc" "$USER_HOME/.bash_profile" "$USER_HOME/.zshrc" "$USER_HOME/.profile"; do
+    [[ -f "$rc" ]] || continue
+    if grep -qF '.pi/agent/bin' "$rc" 2>/dev/null; then
+      echo "PATH already configured in $rc"
+      continue
+    fi
+    {
+      printf '\n# Added by jpi_tools/setup_pi.sh\n'
+      printf 'export PATH="%s:$PATH"\n' "$dirs"
+    } >> "$rc"
+    echo "Added Pi/Herdr PATH to $rc"
+  done
+}
+
+# ------------------------------------------------------------------
 # Early sanity checks
 # ------------------------------------------------------------------
 if ! command -v curl >/dev/null 2>&1; then
@@ -104,19 +127,28 @@ fi
 USER_HOME="${HOME:?HOME is not set}"
 CONFIG_TARGET="$USER_HOME/.pi"
 
+# Directories used by Pi, its bundled Node, and Herdr
+PI_BIN_DIR="$USER_HOME/.pi/agent/bin"
+PI_NODE_BIN_DIR="${XDG_DATA_HOME:-$USER_HOME/.local/share}/pi-node/current/bin"
+PI_LOCAL_BIN="$USER_HOME/.local/bin"
+export PATH="$PI_BIN_DIR:$PI_NODE_BIN_DIR:$PI_LOCAL_BIN:$PATH"
+
 # ------------------------------------------------------------------
 # 1. Install the latest Pi
 # ------------------------------------------------------------------
 PI_INSTALL_URL="https://pi.dev/install.sh"
 run_shell "curl -fsSL \"$PI_INSTALL_URL\" | bash -s -- --latest"
-export PATH="$HOME/bin:$PATH"        # Pi installs into $HOME/bin
+export PATH="$PI_BIN_DIR:$PI_NODE_BIN_DIR:$PI_LOCAL_BIN:$PATH"
 
 # ------------------------------------------------------------------
 # 2. Install Herdr
 # ------------------------------------------------------------------
 HERDR_INSTALL_URL="https://herdr.dev/install.sh"
 run_shell "curl -fsSL \"$HERDR_INSTALL_URL\" | bash -s -- -y"
-export PATH="$HOME/bin:$PATH"
+export PATH="$PI_BIN_DIR:$PI_NODE_BIN_DIR:$PI_LOCAL_BIN:$PATH"
+
+# Make the PATH change permanent for future shells
+persist_path
 
 # ------------------------------------------------------------------
 # 3. Copy the repository .pi into the user's home directory
@@ -203,4 +235,13 @@ if [[ $DRY_RUN -eq 1 ]]; then
   echo "Dry-run finished – no system changes were made."
 else
   echo "Pi and Herdr installed, models and configuration applied."
+  echo
+  if command -v pi >/dev/null 2>&1; then
+    echo "'pi' is ready to use."
+  else
+    echo "Note: 'pi' is not on PATH in this shell yet."
+  fi
+  echo "To use 'pi' in your current shell, run:"
+  echo "    source ~/.bashrc"
+  echo "or simply open a new terminal."
 fi
