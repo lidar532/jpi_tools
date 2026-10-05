@@ -1,0 +1,13 @@
+# Secrets – never commit these
+.pi/agent/auth.json
+
+# Session transcripts may contain pasted secrets
+.pi/agent/sessions/
+
+# Installed Pi program / binaries (recreated by setup_pi.sh)
+.pi/agent/install/
+.pi/agent/bin/
+
+# Backups / misc
+*.bak
+*.bak.*
