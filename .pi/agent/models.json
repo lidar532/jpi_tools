@@ -1,0 +1,173 @@
+{
+  "providers": {
+    "ollama": {
+      "baseUrl": "https://ollama.com/v1",
+      "api": "openai-completions",
+      "apiKey": "$OLLAMA_API_KEY",
+      "models": [
+        {
+          "id": "gpt-oss:20b",
+          "contextWindow": 131072,
+          "maxTokens": 131072,
+          "reasoning": true,
+          "input": [
+            "text"
+          ]
+        },
+        {
+          "id": "gpt-oss:120b",
+          "contextWindow": 131072,
+          "maxTokens": 131072,
+          "reasoning": true,
+          "input": [
+            "text"
+          ]
+        },
+        {
+          "id": "minimax-m2.7",
+          "contextWindow": 204800,
+          "maxTokens": 176947,
+          "reasoning": true,
+          "input": [
+            "text"
+          ]
+        },
+        {
+          "id": "minimax-m3",
+          "contextWindow": 1000000,
+          "maxTokens": 512000,
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ]
+        },
+        {
+          "id": "deepseek-v4.1-flash",
+          "contextWindow": 1048576,
+          "maxTokens": 943718,
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ]
+        },
+        {
+          "id": "deepseek-v4-pro:0813",
+          "contextWindow": 1048576,
+          "maxTokens": 1048576,
+          "reasoning": true,
+          "input": [
+            "text"
+          ]
+        },
+        {
+          "id": "nemotron-3-super",
+          "contextWindow": 262144,
+          "maxTokens": 262144,
+          "reasoning": true,
+          "input": [
+            "text"
+          ]
+        },
+        {
+          "id": "nemotron-3-ultra",
+          "contextWindow": 1000000,
+          "maxTokens": 512300,
+          "reasoning": true,
+          "input": [
+            "text"
+          ]
+        },
+        {
+          "id": "nemotron-3-nano:30b",
+          "contextWindow": 262144,
+          "maxTokens": 262144,
+          "reasoning": true,
+          "input": [
+            "text"
+          ]
+        },
+        {
+          "id": "glm-5.2",
+          "contextWindow": 1048576,
+          "maxTokens": 262144,
+          "reasoning": true,
+          "input": [
+            "text"
+          ]
+        },
+        {
+          "id": "glm-5.3",
+          "contextWindow": 1048576,
+          "maxTokens": 1048576,
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ]
+        },
+        {
+          "id": "glm-5.3-flash",
+          "contextWindow": 1048576,
+          "maxTokens": 1048576,
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ]
+        },
+        {
+          "id": "kimi-k2.6",
+          "contextWindow": 262144,
+          "maxTokens": 262144,
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ]
+        },
+        {
+          "id": "kimi-k2.7-code",
+          "contextWindow": 262144,
+          "maxTokens": 262144,
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ]
+        },
+        {
+          "id": "kimi-k3",
+          "contextWindow": 1048576,
+          "maxTokens": 1048576,
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ]
+        },
+        {
+          "id": "gemma4:31b",
+          "contextWindow": 262144,
+          "maxTokens": 131072,
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ]
+        },
+        {
+          "id": "mistral-large-3:675b",
+          "contextWindow": 262144,
+          "maxTokens": 262144,
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ]
+        }
+      ]
+    }
+  }
+}
