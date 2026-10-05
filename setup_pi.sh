@@ -79,6 +79,43 @@ run "$RUN_HERDR_INSTALL"
 export PATH="$HOME/bin:$PATH"
 
 #-------------------------------------------
+# Install models from existing .pi config
+#-------------------------------------------
+MODEL_JSON="${HOME}/.pi/agent/models.json"
+
+if [[ -f "$MODEL_JSON" ]]; then
+  echo "Found models.json at $MODEL_JSON – preparing to install models"
+
+  # Use jq for JSON parsing – install if missing
+  if ! command -v jq > /dev/null 2>&1; then
+    echo "jq not found – attempting to install it"
+    if command -v apt-get > /dev/null 2>&1; then
+      run "sudo apt-get update && sudo apt-get install -y jq"
+    elif command -v dnf > /dev/null 2>&1; then
+      run "sudo dnf install -y jq"
+    elif command -v yum > /dev/null 2>&1; then
+      run "sudo yum install -y jq"
+    else
+      echo "Could not autodetect package manager – please install jq manually"
+    fi
+  fi
+
+  # Collect model identifiers from the JSON file
+  mapfile -t MODEL_IDS < <(jq -r '.models[].id' "$MODEL_JSON")
+  if [[ ${#MODEL_IDS[@]} -eq 0 ]]; then
+    echo "No models defined in $MODEL_JSON – skipping"
+  else
+    for MODEL_ID in "${MODEL_IDS[@]}"; do
+      echo "Installing model: $MODEL_ID"
+      run "pi install model $MODEL_ID"
+    done
+  fi
+else
+  echo "No $MODEL_JSON present – skipping additional model installation"
+fi
+
+
+#-------------------------------------------
 # Step 3: Copy the current .pi config
 #-------------------------------------------
 # Determine current user and home directory
