@@ -17,12 +17,30 @@ usage() {
   cat <<EOF
 Usage: $0 [OPTIONS]
 
+  Bootstrap Pi + Herdr and install the .pi configuration stored in this
+  repository.
+
+  Getting started (end-to-end):
+
+    git clone https://github.com/lidar532/jpi_tools.git
+    cd jpi_tools
+    ./setup_pi.sh
+
   Options:
     -h, --help      Show this help message and exit.
     -d, --dryrun    Execute in dry-run mode (no changes made).
 
-  The script must be run from the repository root that contains the
-  .pi configuration directory.
+  What it does:
+    1. Installs the latest Pi from https://pi.dev
+    2. Installs Herdr
+    3. Backs up any existing ~/.pi to ~/.pi.bak.<timestamp>
+    4. Copies this repository's .pi into ~/.pi
+    5. Installs every model listed in .pi/agent/models.json
+    6. Runs 'pi config apply'
+
+  Note: set credentials referenced by models.json (for example
+  \$OLLAMA_API_KEY) before running, or run Pi's auth flow afterwards.
+  No API keys are stored in this repository.
 EOF
   exit 0
 }
