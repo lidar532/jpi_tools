@@ -50,10 +50,9 @@ The script:
 1. Installs the latest Pi from `https://pi.dev`.
 2. Installs Herdr.
 3. Adds the Pi/Herdr bin directories to your shell profile (`~/.bashrc`, `~/.zshrc`, etc.).
-4. Backs up any existing `~/.pi` to `~/.pi.bak.<timestamp>`.
-5. Copies this repository's `.pi` into `~/.pi`.
-6. Installs every model listed in `.pi/agent/models.json`.
-7. Runs `pi config apply`.
+4. Merges this repository's `.pi` into `~/.pi`. Any existing config files are
+   backed up to `~/.pi.config-bak.<timestamp>` first; the installed Pi program
+   itself is left untouched.
 
 After the script finishes, load the new PATH (or open a new terminal) so the
 `pi` command is found:
