@@ -138,15 +138,21 @@ if [[ -f "$MODEL_JSON" ]]; then
   # `select(...)` drops null *and* empty-string IDs.
   MODEL_IDS=()
   if command -v jq >/dev/null 2>&1; then
-    mapfile -t MODEL_IDS < <(jq -r '.models[]? | select(.id != null and .id != "") | .id' "$MODEL_JSON" 2>/dev/null)
+    mapfile -t MODEL_IDS < <(jq -r '(.models[]?, .providers[]?.models[]?) | select(.id != null and .id != "") | .id' "$MODEL_JSON" 2>/dev/null | sort -u)
   elif command -v python3 >/dev/null 2>&1; then
     mapfile -t MODEL_IDS < <(python3 -c '
 import json, sys
 data = json.load(open(sys.argv[1]))
+ids = []
 for m in data.get("models", []):
-    mid = m.get("id")
-    if mid:
-        print(mid)
+    if m.get("id"):
+        ids.append(m["id"])
+for provider in data.get("providers", {}).values():
+    for m in provider.get("models", []):
+        if m.get("id"):
+            ids.append(m["id"])
+for mid in dict.fromkeys(ids):
+    print(mid)
 ' "$MODEL_JSON" 2>/dev/null)
   else
     echo "Warning: neither jq nor python3 available; cannot parse models.json" >&2
