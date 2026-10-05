@@ -60,7 +60,7 @@ run() {
 # Step 1: Install the latest Pi
 #-------------------------------------------
 PI_INSTALL_URL="https://pi.dev/install.sh"
-RUN_PI_INSTALL="curl -fsSL "$PI_INSTALL_URL" | bash -s -- --latest"
+RUN_PI_INSTALL="curl -fsSL \"$PI_INSTALL_URL\" | bash -s -- --latest"
 run "$RUN_PI_INSTALL"
 
 # The official installer places the CLI at ~/bin/pi or updates $PATH.
@@ -72,7 +72,7 @@ export PATH="$HOME/bin:$PATH"
 #-------------------------------------------
 # Herdr is distributed via a simple script; adjust the URL if it changes.
 HERDR_INSTALL_URL="https://herdr.dev/install.sh"
-RUN_HERDR_INSTALL="curl -fsSL "$HERDR_INSTALL_URL" | bash -s -- -y"
+RUN_HERDR_INSTALL="curl -fsSL \"$HERDR_INSTALL_URL\" | bash -s -- -y"
 run "$RUN_HERDR_INSTALL"
 
 # Ensure herdr CLI is on the path
@@ -81,16 +81,22 @@ export PATH="$HOME/bin:$PATH"
 #-------------------------------------------
 # Step 3: Copy the current .pi config
 #-------------------------------------------
-CONFIG_SOURCE=".pi"
-CONFIG_TARGET="$HOME/.pi"
+# Determine current user and home directory
+USER_NAME="${USER:-$LOGNAME}"
+USER_HOME="${HOME:-$(eval echo ~${USER_NAME})}"
+
+# Locate the .pi configuration in the user's home
+CONFIG_SOURCE="${USER_HOME}/.pi"
+CONFIG_TARGET="${USER_HOME}/.pi"
 
 if [[ ! -d "$CONFIG_SOURCE" ]]; then
-  echo "Error: Configuration directory \"$CONFIG_SOURCE\" not found." >&2
+  echo "Error: Expected configuration directory \"$CONFIG_SOURCE\" not found." >&2
   exit 1
 fi
 
 # Copy (or update) the configuration directory
-run "cp -rv "$CONFIG_SOURCE" "$CONFIG_TARGET"
+run "cp -rv \"$CONFIG_SOURCE\" \"$CONFIG_TARGET\""
+
 
 #-------------------------------------------
 # Step 4: Apply configuration to Pi
@@ -99,7 +105,8 @@ run "cp -rv "$CONFIG_SOURCE" "$CONFIG_TARGET"
 #   pi config apply --source="$CONFIG_TARGET"
 # We check if the command exists.
 if command -v pi >/dev/null 2>&1; then
-  run "pi config apply --source="$CONFIG_TARGET"
+  run "pi config apply --source=$CONFIG_TARGET"
+
 else
   echo "Warning: 'pi' command not found after installation; skip config apply.")
 fi
@@ -113,4 +120,3 @@ else
   echo "Pi and Herdr installation complete. Configuration applied."
 fi
 
-EOF
