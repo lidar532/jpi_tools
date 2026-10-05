@@ -24,6 +24,21 @@ jpi_tools/
 
 ## Usage
 
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/lidar532/jpi_tools.git
+cd jpi_tools
+```
+
+### 2. Export your Ollama.com API key (optional, required for hosted models)
+
+```bash
+export OLLAMA_API_KEY=...
+```
+
+### 3. Run the setup script
+
 ```bash
 ./setup_pi.sh          # install and configure
 ./setup_pi.sh -d       # dry run: print commands only
