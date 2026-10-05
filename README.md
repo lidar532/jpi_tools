@@ -63,10 +63,11 @@ source ~/.bashrc    # or ~/.zshrc / ~/.profile
 
 ## Providers
 
-`.pi/agent/models.json` defines one provider, **Ollama.com**, pointing at the
-online endpoint `https://ollama.com/v1` (not localhost), with 17 hosted models.
-The provider id is `ollama.com` and it is authenticated through the
-`OLLAMA_API_KEY` environment variable.
+`.pi/agent/models.json` defines one provider with display name **Ollama.com**,
+pointing at the online endpoint `https://ollama.com/v1` (not localhost), with
+17 hosted models. Its id is `ollama` (kept stable so existing credentials keep
+working) and it is authenticated through the `OLLAMA_API_KEY` environment
+variable.
 
 To configure it from inside Pi:
 

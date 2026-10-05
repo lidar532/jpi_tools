@@ -1,6 +1,6 @@
 {
   "providers": {
-    "ollama.com": {
+    "ollama": {
       "name": "Ollama.com",
       "baseUrl": "https://ollama.com/v1",
       "api": "openai-completions",
