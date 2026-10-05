@@ -15,7 +15,7 @@ jpi_tools/
 ├── setup_pi.sh          # bootstrap Pi/Herdr + apply repo .pi config
 └── .pi/
     └── agent/
-        ├── models.json              # providers + model definitions
+        ├── models.json              # Ollama.com provider + model definitions
         ├── models-store.json
         ├── settings.json
         └── extensions/
@@ -38,6 +38,13 @@ The script:
 4. Copies this repository's `.pi` into `~/.pi`.
 5. Installs every model listed in `.pi/agent/models.json`.
 6. Runs `pi config apply`.
+
+## Providers
+
+`.pi/agent/models.json` defines one provider, **Ollama.com**, pointing at the
+online endpoint `https://ollama.com/v1` (not localhost), with 17 hosted models.
+The provider id is `ollama.com` and it is authenticated through the
+`OLLAMA_API_KEY` environment variable.
 
 ## Secrets
 
